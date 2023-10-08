@@ -20,7 +20,7 @@ export const productsShopify = async ():Promise<GraphQLResponse> => {
         body: JSON.stringify({
             query: gql`
             query ProductsQuery {
-                products(first: 6) {
+                products(first: 5) {
                   nodes {
                     description
                     featuredImage {
@@ -58,4 +58,4 @@ export const productsShopify = async ():Promise<GraphQLResponse> => {
       }
     
       return response.json();
-}
+};
