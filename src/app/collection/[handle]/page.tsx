@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 type Props = {
     params: {handle: string};
     searchParams: { [key: string]: string | string[] | undefined };
-}
+};
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
     console.log("params", params);

@@ -11,23 +11,28 @@ const ProductGrid = async () => {
     if (!products?.length) return null;
 
     return (
-        <section className="flex flex-col p-14 justify-center">
-            <span className="text-base font-semibold text-center pb-1">FEATURED</span>
-            <h2 className="text-[54px] leading-[58px] font-medium text-center w-[880px] self-center pb-4">Create your dream shop in a glance with SHOPR theme.</h2>
-            <p className="text-[18px] leading-[30px] text-center w-[540px] self-center">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
-            <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                {products.map((product, i) => (
-                    <li
-                        className="spect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-                        key={`${product.handle}${i}`}>
-                        <Link href={`/product/${product.handle}`} className="relative h-full w-full">
-                            <Image src={product.featuredImage.url} alt={product.featuredImage.altText} width={300} height={150} />
-                            <h2>{product.title}</h2>
-                        </Link>
-                    </li>
+        <div className="bg-white">
+            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
+                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                {products.map((product) => (
+                    <a key={product.id} href={`/product/${product.handle}`} className="group">
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                        <Image
+                        src={product.featuredImage.url}
+                        alt={product.featuredImage.altText}
+                        width={product.featuredImage.width}
+                        height={product.featuredImage.height}
+                        className="h-full w-full object-content object-center group-hover:opacity-75"
+                        />
+                    </div>
+                    <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
+                    <p className="mt-1 text-lg font-medium text-gray-900">{product.priceRange.maxVariantPrice.amount}</p>
+                    </a>
                 ))}
-            </ul>
-        </section>
+                </div>
+            </div>
+        </div>
     );
 };
 

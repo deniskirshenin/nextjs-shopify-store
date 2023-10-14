@@ -133,18 +133,18 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 };
 
 const reshapeProduct = (product: ShopifyProduct, filterHiddenProducts: boolean = true) => {
-    if(!product || (filterHiddenProducts && product.tags.includes(HIDDEN_PRODUCT_TAG))) {
-        return undefined;
+    if (!product || (filterHiddenProducts && product.tags.includes(HIDDEN_PRODUCT_TAG))) {
+      return undefined;
     }
-
-    const { images, variants, ...rest} = product;
-
+  
+    const { images, variants, ...rest } = product;
+  
     return {
-        ...rest,
-        images: reshapeImages(images, product.title),
-        variants: removeEdgesAndNodes(variants)
+      ...rest,
+      images: reshapeImages(images, product.title),
+      variants: removeEdgesAndNodes(variants)
     };
-};
+  };
 
 const reshapeProducts = (products: ShopifyProduct[]) => {
     const reshapedProducts = [];
@@ -338,17 +338,17 @@ export async function getPages(): Promise<Page[]> {
     return removeEdgesAndNodes(response.body.data.pages);
 };
 
-export async function getProduct(handle: string): Promise<ShopifyProductOperation | undefined> {
-    const response = await ShopifyFetch<ShopifyProductOperation>({
-        query: getProductQuery,
-        tags: [TAGS.products],
-        variables: {
-            handle
-        }
+export async function getProduct(handle: string): Promise<Product | undefined> {
+    const res = await ShopifyFetch<ShopifyProductOperation>({
+      query: getProductQuery,
+      tags: [TAGS.products],
+      variables: {
+        handle
+      }
     });
-
-    return reshapeProduct(response.body.data.product, false);
-};
+  
+    return reshapeProduct(res.body.data.product, false);
+  }
 
 export async function getProductRecommendations(productId: string): Promise<Product[]> {
     const response = await ShopifyFetch<ShopifyProductRecommendationsOperation>({
