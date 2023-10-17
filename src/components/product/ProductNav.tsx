@@ -1,31 +1,6 @@
-import { getProduct } from "@/app/lib/shopify";
-import ProductPage from "@/components/product/ProductPage";
-import ProductVariants from "@/components/product/ProductVariants";
-import { StarIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import React from 'react';
 
-export const runtime = 'edge';
-
-export async function generateMetadata({
-  params
-}: {
-  params: {handle: string}
-}) {
-  console.log("params", params);
-    const handle = params.handle;
-    console.log("HANDLE:", handle);
-    const collection = await getProduct(handle);
-
-    if(!collection) return notFound();
-};
-
-const SingleProductPage = async ({
-  params
-}: {
-  params: {handle: string}
-}) => {
-  const products = {
+const product = {
     name: 'Basic Tee 6-Pack',
     price: '$192',
     href: '#',
@@ -77,22 +52,40 @@ const SingleProductPage = async ({
     details:
       'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
   }
-  const reviews = { href: '#', average: 4, totalCount: 117 }
 
-  function classNames(...classes:string[]) {
-    return classes.filter(Boolean).join(' ')
-  }
-
-  const product = await getProduct(params.handle);
-  console.log(product);
-  const variants = product?.variants;
-
-  if (!product) {
-    return notFound(); // Handle the not-found case
-  }
+const ProductNav = () => {
   return (
-    <ProductPage product={product} />
-  );
-};
+    <div className="bg-[#f1f1f1] py-3">
+        <nav aria-label="Breadcrumb">
+          <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            {product.breadcrumbs.map((breadcrumb) => (
+              <li key={breadcrumb.id}>
+                <div className="flex items-center">
+                  <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
+                    {breadcrumb.name}
+                  </a>
+                  <svg
+                    width={16}
+                    height={20}
+                    viewBox="0 0 16 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="h-5 w-4 text-gray-300"
+                  >
+                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                  </svg>
+                </div>
+              </li>
+            ))}
+            <li className="text-sm">
+              <a href={product.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
+                {product.name}
+              </a>
+            </li>
+          </ol>
+        </nav>
+    </div>
+  )
+}
 
-export default SingleProductPage;
+export default ProductNav;
