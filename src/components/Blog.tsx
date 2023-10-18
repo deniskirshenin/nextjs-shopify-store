@@ -1,30 +1,31 @@
+import { getArticles } from '@/app/lib/shopify';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-const Blog = () => {
-    const posts = [
-        { id: 3856, image: '/blog/blog-image-1.png', date: 'October 12, 2024', title: '3 ways to keep your plants fresh', width: 424, height: 316},
-        { id: 49384, image: '/blog/blog-image-2.png', date: 'October 12, 2024', title: 'Side table plans and their benefits', width: 424, height: 316},
-        { id: 487548, image: '/blog/blog-image-3.png', date: 'October 12, 2024', title: 'Floral scent is the next big thing', width: 424, height: 316},
-    ];
+const Blog = async () => {
+    const articles = await getArticles();
+    const shownArticles = articles.slice(0, 2);
+
     return (
-        <section className="p-14 flex flex-col">
-            <h2 className="text-[40px] leading-[44px] font-medium mb-8">Plant blog</h2>
-            <ul className="flex gap-8">
-                {posts.map((post) => (
-                    <li key={post.id} className="flex flex-col gap-[10px]">
-                        <Image 
-                            src={post.image}
-                            alt={post.title}
-                            width={post.width}
-                            height={post.height}
-                        />
-                        <div className="flex flex-col items-start">
-                            <span className="text-[14px] leading-[22px] font-normal text-slate-500 mb-1">{post.date}</span>
-                            <h3 className="font-[20px] leading-[28px] font-medium mb-[6px]">{post.title}</h3>
-                            <Link href="/"
-                                className="inline-flex gap-1 text-[18px] leading-[32px] border-b border-current font-medium text-black hover:text-green-300"
+        <section className="flex flex-col">
+            <h2 className="sr-only">Blog</h2>
+            <ul className="flex">
+                {shownArticles.map((article) => (
+                    <li key={article.id} className="flex flex-col flex-[1_1_50%] relative">
+                        {article.image && (
+                            <Image 
+                                src={article.image.url}
+                                alt={article.image.altText}
+                                width={article.image.width}
+                                height={article.image.height}
+                                className='aspect-[1/1] object-cover'
+                            />
+                        )}
+                        <div className="flex flex-col items-end p-6 absolute bottom-0">
+                            <h3 className="text-[28px] text-white leading-[28px] font-medium mb-[6px]">{article.title}</h3>
+                            <Link href={`stories/${article.handle}`}
+                                className="inline-flex gap-1 text-[18px] text-white leading-[32px] border-b border-current font-medium text-black hover:text-green-300"
                                 >Read more
                             </Link>
                         </div>

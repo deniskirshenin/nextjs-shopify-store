@@ -4,6 +4,8 @@ import CollectionGrid from "@/components/CollectionGrid";
 import Featured from "@/components/Featured";
 import NewArrivals from "@/components/NewArrivals";
 import ProductGrid from "@/components/ProductGrid";
+import NewCollection from "@/components/NewCollection";
+import CapsuleCollection from "@/components/CapsuleCollection";
 
 const Home = async () => {
 
@@ -11,9 +13,11 @@ const Home = async () => {
     <main className="mx-auto">
       <Hero/>
       <CollectionGrid />
-      <NewArrivals />
+      {/* <NewArrivals /> */}
       <Featured />
-      <ProductGrid />
+      <NewCollection />
+      <CapsuleCollection />
+      {/* <ProductGrid /> */}
       <Blog />
     </main>
   );

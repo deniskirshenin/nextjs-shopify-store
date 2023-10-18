@@ -6,38 +6,37 @@ const CollectionGrid = async () => {
     const collections = await getCollections();
     const collectionList = collections.filter(collection => collection.handle.includes('men'));
     return (
-        <div className="bg-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-            <h2 className="text-2xl font-bold text-gray-900">Collections</h2>
+
+          <div className="w-full mx-auto bg-gray-100">
+            <h2 className="sr-only">Collections</h2>
   
-            <div className="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-6 lg:space-y-0">
+            <div className="flex">
               {collectionList.map((collection, i) => (
-                <div key={`${collection.handle}${i}`} className="group relative">
-                  <div className="relative h-80 w-full overflow-hidden rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
-                    <Image
-                      src={collection.image.url}
-                      alt={collection.image.altText}
-                      width={collection.image.width}
-                      height={collection.image.height}
-                      className="h-full w-full object-content object-center"
-                    />
-                  </div>
-                  <div className="absolute bottom-4 left-4">
-                    <h3 className="mt-6 text-md text-white-500">
-                        <Link href={`/collection/${collection.handle}`}>
-                        <span className="absolute inset-0" />
-                        {collection.title}
-                        </Link>
-                    </h3>
-                    <p className="text-sm font-semibold text-white-900">{collection.description}</p>
+                <div key={`${collection.handle}${i}`} className="flex flex-[1_0_50%] w-full">
+                  <div className="relative flex flex-1">
+                    <Link className='text-xl text-white-500 aspect-[1/1]' href={`/collection/${collection.handle}`}>
+                      <Image
+                        src={collection.image.url}
+                        alt={collection.image.altText}
+                        width={collection.image.width}
+                        height={collection.image.height}
+                        className="h-full w-full object-cover object-center "
+                      />
+                     <div className='flex absolute w-full h-full absolute top-0 items-end p-[55px]'>
+                      <div className="flex flex-col items-start text-white p-[55px] bottom-0 left-0 absolute">
+                      
+                        <h2 className="text-[54px] text-left leading-[58px] font-medium mb-6">{collection.title}</h2>
+                        <Link href="/"
+                          className="inline-flex text-left gap-1 text-[18px] leading-[32px] font-medium text-white hover:text-green-300"
+                        >See collection<span aria-hidden="true">&rarr;</span></Link>
+                      </div>
+                     </div>
+                    </Link>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
     )
 };
 

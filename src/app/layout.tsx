@@ -1,12 +1,12 @@
 import Header from '@/components/Header';
 import './globals.css'
 import type { Metadata } from 'next'
-import { Space_Grotesk } from 'next/font/google'
+import { Prompt } from 'next/font/google'
 import type { ReactNode } from 'react'
 import Footer from '@/components/Footer'
 import Banner from '@/components/Banner';
 
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
+const prompt = Prompt({ weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Shopify store',
@@ -19,8 +19,8 @@ type RootLayoutProps = {
 
 const RootLayout = ({ children } : RootLayoutProps) => {
   return (
-    <html lang="en">
-      <body className={spaceGrotesk.className}>
+    <html lang="en" className='relative'>
+      <body className={`${prompt.className} relative`}>
         <Banner />
         <Header />
         {children}

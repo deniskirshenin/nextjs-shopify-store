@@ -13,20 +13,19 @@ const navigation = [
 const Hero = () => {
   return (
     <div className="bg-white">
-      <div className="relative isolate px-14 py-20">
-       
+      <div className="relative isolate">
         <div className="mx-auto">
-          <div className="hidden sm:mb-8 sm:flex sm:justify-center gap-x-35">
-            <h2 className="text-7xl font-medium">Plant your house with handmade love.</h2>
+        <div className="flex flex-1 w-full aspect-[2/1]">
+            <Image className="object-cover" src='/modern-tokyo-street-background.jpg' alt='' width={1440} height={800} sizes='100vw' />
+          </div>
+          <div className="hidden sm:mb-8 sm:flex sm:justify-center gap-x-35 absolute bottom-0 text-white px-14 py-20">
+            <h2 className="text-7xl font-medium">Tokyo Fusion: Unleash Your Urban Style.</h2>
             <div className="flex flex-col gap-4 pt-8 justify-end align-end">
-                <p className="font-normal text-lg text-right">All good things starts with a homepage. Get inspired without breaking your wallet.</p>
+                <p className="font-normal text-lg text-right">Elevate your style with our Tokyo-inspired streetwear, where tradition meets urban innovation.</p>
                 <Link href="#" className="flex font-medium text-white py-2 px-6 bg-black gap-1 rounded-md ml-auto w-48">
                     See Collection <span aria-hidden="true">&rarr;</span>
                 </Link>
             </div>
-          </div>
-          <div className="flex flex-1 w-full h-[800px]">
-            <Image className="object-cover" src='/modern-tokyo-street-background.jpg' alt='' width={1440} height={800} sizes='100vw' />
           </div>
         </div>
       </div>

@@ -25,5 +25,5 @@ export const TAGS = {
     products: 'products'
 };
 
-export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2023-07/graphql.json';
+export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2023-10/graphql.json';
 export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
