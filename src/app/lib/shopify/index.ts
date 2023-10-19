@@ -1,13 +1,13 @@
 import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from "../constants";
 import { isShopifyError } from "../type-guard";
-import { Article, Cart, Collection, Connection, Image, Menu, Page, Product, ShopifyAddToCartOperation, ShopifyArticleOperation, ShopifyArticlesOperation, ShopifyCart, ShopifyCartOperation, ShopifyCollection, ShopifyCollectionOperation, ShopifyCollectionProductOperation, ShopifyCollectionsOperation, ShopifyCreateCartOperation, ShopifyMenuOperation, ShopifyPageOperation, ShopifyPagesOperation, ShopifyProduct, ShopifyProductOperation, ShopifyProductRecommendationsOperation, ShopifyProductsOperation, ShopifyRemoveFromCartOperation, ShopifyUpdateCartOperation } from "../types";
+import { Article, Cart, Collection, Connection, Image, Menu, Product, ShopifyAddToCartOperation, ShopifyArticleOperation, ShopifyArticlesOperation, ShopifyCart, ShopifyCartOperation, ShopifyCollection, ShopifyCollectionOperation, ShopifyCollectionProductOperation, ShopifyCollectionsOperation, ShopifyCreateCartOperation, ShopifyMenuOperation, ShopifyProduct, ShopifyProductOperation, ShopifyProductRecommendationsOperation, ShopifyProductsOperation, ShopifyRemoveFromCartOperation, ShopifyUpdateCartOperation } from "../types";
 import { ensureStartsWith } from "../utils";
 import { headers } from 'next/headers';
 import { addToCartMutation, createCartMutation, editCartItemsMutation, removeFromCartMutation } from "./mutations/cart";
 import { getCartQuery } from "./queries/cart";
 import { getCollectionProductsQuery, getCollectionQuery, getCollectionsQuery } from "./queries/collection";
 import { getMenuQuery } from "./queries/menu";
-import { getPageQuery, getPagesQuery } from "./queries/page";
+// import { getPageQuery, getPagesQuery } from "./queries/page";
 import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } from "./queries/product";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
@@ -339,24 +339,22 @@ export async function getArticles():Promise<Article[]> {
     return removeEdgesAndNodes(response.body.data.blog.articles);
 };
 
-export async function getPage(handle: string): Promise<Page> {
-    const response = await ShopifyFetch<ShopifyPageOperation>({
-        query: getPageQuery,
-        variables: {
-            handle
-        }
-    });
-
-    return response.body.data.pageByHandle;
-};
-
-export async function getPages(): Promise<Page[]> {
-    const response = await ShopifyFetch<ShopifyPagesOperation>({
-        query: getPagesQuery,
-    });
-
-    return removeEdgesAndNodes(response.body.data.pages);
-};
+// export async function getPage(handle: string): Promise<Page> {
+//     const res = await ShopifyFetch<ShopifyPageOperation>({
+//       query: getPageQuery,
+//       variables: { handle }
+//     });
+  
+//     return res.body.data.pageByHandle;
+//   }
+  
+//   export async function getPages(): Promise<Page[]> {
+//     const res = await ShopifyFetch<ShopifyPagesOperation>({
+//       query: getPagesQuery
+//     });
+  
+//     return removeEdgesAndNodes(res.body.data.pages);
+//   }
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
     const res = await ShopifyFetch<ShopifyProductOperation>({

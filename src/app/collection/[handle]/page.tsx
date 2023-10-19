@@ -22,16 +22,14 @@ export async function generateMetadata({
     };
 };
 
-const CollectionPage = async ({
+export default async function CollectionPage ({
     params,
     searchParams,
-    products
 }: {
     params: { handle: string };
-    searchParams: { [key: string]: string | string[] | undefined };
-    products: ShopifyProduct[];
+    searchParams?: { [key: string]: string | string[] | undefined };
 }
-) => {
+) {
     const { sort } = searchParams as { [key: string]: string};
     const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
     const collectionProducts = await getCollectionProducts({ collection: params.handle, sortKey, reverse});
@@ -41,5 +39,3 @@ const CollectionPage = async ({
         </div>
     );
 };
-
-export default CollectionPage;
