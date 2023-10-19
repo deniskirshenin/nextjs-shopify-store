@@ -12,11 +12,13 @@ import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } fro
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { getArticleQuery, getArticlesQuery } from "./queries/article";
+import { URL } from "url";
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
   : '';
-const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
+
+const endpoint = new URL(SHOPIFY_GRAPHQL_API_ENDPOINT, domain).toString();
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
