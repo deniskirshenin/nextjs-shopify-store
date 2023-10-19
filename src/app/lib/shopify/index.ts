@@ -12,13 +12,11 @@ import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } fro
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { getArticleQuery, getArticlesQuery } from "./queries/article";
-import { URL } from "url";
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
   : '';
-
-const endpoint = new URL(SHOPIFY_GRAPHQL_API_ENDPOINT, domain).toString();
+const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
@@ -29,55 +27,56 @@ export async function ShopifyFetch<T>({
     query,
     tags,
     variables
-} : {
-    cache?: RequestCache,
-    headers?: HeadersInit,
-    query?: string,
-    tags?: string[],
-    variables?: ExtractVariables<T>
-}): Promise<{ status: number; body: T } | never> {
+  }: {
+    cache?: RequestCache;
+    headers?: HeadersInit;
+    query: string;
+    tags?: string[];
+    variables?: ExtractVariables<T>;
+  }): Promise<{ status: number; body: T } | never> {
     try {
-        const result = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Shopify-Storefront-Access-Token': key,
-              ...headers
-            },
-            body: JSON.stringify({
-              ...(query && { query }),
-              ...(variables && { variables })
-            }),
-            cache,
-            ...(tags && { next: { tags } })
-        });
-
-        const body = await result.json();
-
-        if(body.errors) {
-            throw body.errors[0];
-        }
-
-        return {
-            status: result.status,
-            body
-        };
-    } catch (error) {
-        if (isShopifyError(error)) {
-            throw {
-                cause: error.cause?.toString() || 'unknown',
-                status: error.status || 500,
-                message: error.message,
-                query
-            };
-        }
-
+      const result = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': key,
+          ...headers
+        },
+        body: JSON.stringify({
+          ...(query && { query }),
+          ...(variables && { variables })
+        }),
+        cache,
+        ...(tags && { next: { tags } })
+      });
+  
+      const body = await result.json();
+  
+      if (body.errors) {
+        throw body.errors[0];
+      }
+  
+      return {
+        status: result.status,
+        body
+      };
+    } catch (e) {
+      if (isShopifyError(e)) {
         throw {
-            error: error,
-            query
+          cause: e.cause?.toString() || 'unknown',
+          status: e.status || 500,
+          message: e.message,
+          query
         };
+      }
+  
+      throw {
+        error: e,
+        query
+      };
     }
-};
+}
+  
 
 const removeEdgesAndNodes = (array: Connection<any>) => {
     return array.edges.map((edge) => edge?.node);
