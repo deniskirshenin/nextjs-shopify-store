@@ -76,7 +76,6 @@ export async function ShopifyFetch<T>({
       };
     }
 }
-  
 
 const removeEdgesAndNodes = (array: Connection<any>) => {
     return array.edges.map((edge) => edge?.node);
