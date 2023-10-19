@@ -1,21 +1,23 @@
 import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from "../constants";
 import { isShopifyError } from "../type-guard";
-import { Article, Cart, Collection, Connection, Image, Menu, Page, Product, ShopifyAddToCartOperation, ShopifyArticleOperation, ShopifyArticlesOperation, ShopifyCart, ShopifyCartOperation, ShopifyCollection, ShopifyCollectionOperation, ShopifyCollectionProductOperation, ShopifyCollectionsOperation, ShopifyCreateCartOperation, ShopifyMenuOperation, ShopifyPageOperation, ShopifyPagesOperation, ShopifyProduct, ShopifyProductOperation, ShopifyProductRecommendationsOperation, ShopifyProductsOperation, ShopifyRemoveFromCartOperation, ShopifyUpdateCartOperation } from "../types";
+import { Article, Cart, Collection, Connection, Image, Menu, Product, ShopifyAddToCartOperation, ShopifyArticleOperation, ShopifyArticlesOperation, ShopifyCart, ShopifyCartOperation, ShopifyCollection, ShopifyCollectionOperation, ShopifyCollectionProductOperation, ShopifyCollectionsOperation, ShopifyCreateCartOperation, ShopifyMenuOperation, ShopifyProduct, ShopifyProductOperation, ShopifyProductRecommendationsOperation, ShopifyProductsOperation, ShopifyRemoveFromCartOperation, ShopifyUpdateCartOperation } from "../types";
 import { ensureStartsWith } from "../utils";
 import { headers } from 'next/headers';
 import { addToCartMutation, createCartMutation, editCartItemsMutation, removeFromCartMutation } from "./mutations/cart";
 import { getCartQuery } from "./queries/cart";
 import { getCollectionProductsQuery, getCollectionQuery, getCollectionsQuery } from "./queries/collection";
 import { getMenuQuery } from "./queries/menu";
-import { getPageQuery, getPagesQuery } from "./queries/page";
+// import { getPageQuery, getPagesQuery } from "./queries/page";
 import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } from "./queries/product";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { getArticleQuery, getArticlesQuery } from "./queries/article";
 
-const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ? ensureStartsWith(process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN, 'https://') : '';
+const domain = process.env.SHOPIFY_STORE_DOMAIN
+  ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
+  : '';
 const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
-const key = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
+const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
 
@@ -25,55 +27,55 @@ export async function ShopifyFetch<T>({
     query,
     tags,
     variables
-} : {
-    cache?: RequestCache,
-    headers?: HeadersInit,
-    query?: string,
-    tags?: string[],
-    variables?: ExtractVariables<T>
-}): Promise<{ status: number; body: T } | never> {
+  }: {
+    cache?: RequestCache;
+    headers?: HeadersInit;
+    query: string;
+    tags?: string[];
+    variables?: ExtractVariables<T>;
+  }): Promise<{ status: number; body: T } | never> {
     try {
-        const result = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Shopify-Storefront-Access-Token': key,
-              ...headers
-            },
-            body: JSON.stringify({
-              ...(query && { query }),
-              ...(variables && { variables })
-            }),
-            cache,
-            ...(tags && { next: { tags } })
-        });
-
-        const body = await result.json();
-
-        if(body.errors) {
-            throw body.errors[0];
-        }
-
-        return {
-            status: result.status,
-            body
-        };
-    } catch (error) {
-        if (isShopifyError(error)) {
-            throw {
-                cause: error.cause?.toString() || 'unknown',
-                status: error.status || 500,
-                message: error.message,
-                query
-            };
-        }
-
+      const result = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': key,
+          ...headers
+        },
+        body: JSON.stringify({
+          ...(query && { query }),
+          ...(variables && { variables })
+        }),
+        cache,
+        ...(tags && { next: { tags } })
+      });
+  
+      const body = await result.json();
+  
+      if (body.errors) {
+        throw body.errors[0];
+      }
+  
+      return {
+        status: result.status,
+        body
+      };
+    } catch (e) {
+      if (isShopifyError(e)) {
         throw {
-            error: error,
-            query
+          cause: e.cause?.toString() || 'unknown',
+          status: e.status || 500,
+          message: e.message,
+          query
         };
+      }
+  
+      throw {
+        error: e,
+        query
+      };
     }
-};
+}
 
 const removeEdgesAndNodes = (array: Connection<any>) => {
     return array.edges.map((edge) => edge?.node);
@@ -339,24 +341,22 @@ export async function getArticles():Promise<Article[]> {
     return removeEdgesAndNodes(response.body.data.blog.articles);
 };
 
-export async function getPage(handle: string): Promise<Page> {
-    const response = await ShopifyFetch<ShopifyPageOperation>({
-        query: getPageQuery,
-        variables: {
-            handle
-        }
-    });
-
-    return response.body.data.pageByHandle;
-};
-
-export async function getPages(): Promise<Page[]> {
-    const response = await ShopifyFetch<ShopifyPagesOperation>({
-        query: getPagesQuery,
-    });
-
-    return removeEdgesAndNodes(response.body.data.pages);
-};
+// export async function getPage(handle: string): Promise<Page> {
+//     const res = await ShopifyFetch<ShopifyPageOperation>({
+//       query: getPageQuery,
+//       variables: { handle }
+//     });
+  
+//     return res.body.data.pageByHandle;
+//   }
+  
+//   export async function getPages(): Promise<Page[]> {
+//     const res = await ShopifyFetch<ShopifyPagesOperation>({
+//       query: getPagesQuery
+//     });
+  
+//     return removeEdgesAndNodes(res.body.data.pages);
+//   }
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
     const res = await ShopifyFetch<ShopifyProductOperation>({

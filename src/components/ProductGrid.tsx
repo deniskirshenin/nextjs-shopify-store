@@ -5,12 +5,8 @@ import React from 'react';
 import ProductCard from './ProductCard';
 import { Product } from '@/app/lib/types';
 
-const ProductGrid = async () => {
-    const products = await getCollectionProducts({
-        collection: 'vans'
-    });
-
-    if (!products?.length) return null;
+const ProductGrid = async ({ products }: { products: Product[] }) => {
+    
 
     return (
         <div className="bg-white">

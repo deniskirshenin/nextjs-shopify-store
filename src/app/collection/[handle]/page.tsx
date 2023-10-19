@@ -1,21 +1,18 @@
 import { defaultSort, sorting } from "@/app/lib/constants";
 import { getCollection, getCollectionProducts } from "@/app/lib/shopify";
-import { Product, ShopifyProduct } from "@/app/lib/types";
+import { ShopifyProduct } from "@/app/lib/types";
 import ProductGrid from "@/components/ProductGrid";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = {
-    params: {handle: string};
-    searchParams: { [key: string]: string | string[] | undefined };
-    products: ShopifyProduct[];
-};
-
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({
+    params
+  }: {
+    params: { handle: string };
+  }): Promise<Metadata> {
     console.log("params", params);
-    const handle = params.handle;
-    console.log("HANDLE:", handle);
-    const collection = await getCollection(handle);
+    console.log("HANDLE:", params.handle);
+    const collection = await getCollection(params.handle);
 
     if(!collection) return notFound();
 
@@ -25,12 +22,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     };
 };
 
-const CollectionPage = async ({
+export default async function CollectionPage ({
     params,
     searchParams,
-    products
-}: Props
-) => {
+}: {
+    params: { handle: string };
+    searchParams?: { [key: string]: string | string[] | undefined };
+}
+) {
     const { sort } = searchParams as { [key: string]: string};
     const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
     const collectionProducts = await getCollectionProducts({ collection: params.handle, sortKey, reverse});
@@ -40,5 +39,3 @@ const CollectionPage = async ({
         </div>
     );
 };
-
-export default CollectionPage;
