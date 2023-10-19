@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from 'react';
-import { ProductOption, ProductVariant } from '@/app/lib/types';
+import { Product, ProductOption, ProductVariant } from '@/app/lib/types';
 import { RadioGroup } from '@headlessui/react';
 import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createUrl } from '@/app/lib/utils';
+import { AddToCart } from '../cart/AddToCart';
 
 type Combination = {
     id: string;
@@ -15,7 +16,9 @@ type Combination = {
 export default function ProductVariants({
     options,
     variants,
+    product,
   }: {
+    product: Product;
     options: ProductOption[];
     variants: ProductVariant[];
   }) {
@@ -84,7 +87,7 @@ export default function ProductVariants({
             </dd>
           </dl>
         ))}
-        
+        <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
         <button
           type="submit"
           className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

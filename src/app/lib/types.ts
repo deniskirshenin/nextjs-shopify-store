@@ -25,7 +25,7 @@ export type CartItem = {
             name: string;
             value: string;
         }[];
-        products: Product;
+        product: Product;
     };
 };
 

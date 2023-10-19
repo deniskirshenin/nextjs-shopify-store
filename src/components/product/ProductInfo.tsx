@@ -20,7 +20,7 @@ const ProductInfo = ({product}: {product:Product}) => {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             
-            <ProductVariants options={product.options} variants={product.variants}/>
+            <ProductVariants product={product} options={product.options} variants={product.variants}/>
             {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>

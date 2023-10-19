@@ -6,6 +6,7 @@ import NewArrivals from "@/components/NewArrivals";
 import ProductGrid from "@/components/ProductGrid";
 import NewCollection from "@/components/NewCollection";
 import CapsuleCollection from "@/components/CapsuleCollection";
+import AllCollections from "@/components/AllCollections";
 
 const Home = async () => {
 
@@ -18,6 +19,7 @@ const Home = async () => {
       <NewCollection />
       <CapsuleCollection />
       {/* <ProductGrid /> */}
+      {/* <AllCollections /> */}
       <Blog />
     </main>
   );

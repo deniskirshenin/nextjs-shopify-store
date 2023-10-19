@@ -22,10 +22,10 @@ const Blog = async () => {
                                 className='aspect-[1/1] object-cover'
                             />
                         )}
-                        <div className="flex flex-col items-end p-6 absolute bottom-0">
+                        <div className="flex flex-col p-[55px] absolute bottom-0">
                             <h3 className="text-[28px] text-white leading-[28px] font-medium mb-[6px]">{article.title}</h3>
                             <Link href={`stories/${article.handle}`}
-                                className="inline-flex gap-1 text-[18px] text-white leading-[32px] border-b border-current font-medium text-black hover:text-green-300"
+                                className="inline-flex gap-1 self-start text-[18px] text-white leading-[32px] border-b border-current font-medium text-black hover:text-green-300"
                                 >Read more
                             </Link>
                         </div>

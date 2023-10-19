@@ -2,7 +2,7 @@ import { gql } from "@/utils/gql";
 import cartFragment from "../fragments/cart";
 
 export const getCartQuery = gql`
-    query getCart {
+    query getCart() {
         cart(id: $cartId) {
             ...cart
         }

@@ -22,8 +22,10 @@ export const sorting: SortFilterItem[] = [
 
 export const TAGS = {
     collections: 'collections',
-    products: 'products'
+    products: 'products',
+    cart: 'cart'
 };
 
+export const DEFAULT_OPTION = 'Default Title';
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2023-10/graphql.json';
 export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
