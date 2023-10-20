@@ -1,9 +1,12 @@
+"use client"
 import { Product } from '@/app/lib/types';
 import React from 'react';
-import ProductVariants from './ProductVariants';
+
 import ProductSummary from './ProductSummary';
 import { StarIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
+import { AddToCart } from '../cart/AddToCart';
+import { ProductVariants } from './ProductVariants';
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
@@ -20,7 +23,8 @@ const ProductInfo = ({product}: {product:Product}) => {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             
-            <ProductVariants product={product} options={product.options} variants={product.variants}/>
+            <ProductVariants options={product.options} variants={product.variants}/>
+            <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
             {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>

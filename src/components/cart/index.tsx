@@ -2,6 +2,7 @@ import { getCart } from '@/app/lib/shopify';
 import { cookies } from 'next/headers';
 import CartModal from './Modal';
 
+
 export default async function Cart() {
   const cartId = cookies().get('cartId')?.value;
   let cart;

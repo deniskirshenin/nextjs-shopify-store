@@ -2,15 +2,16 @@
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+
 import { useSearchParams } from 'next/navigation';
 import {
   // @ts-ignore
   experimental_useFormState as useFormState,
   experimental_useFormStatus as useFormStatus
 } from 'react-dom';
-import { addItem } from './actions';
 import LoadingDots from '../LoadingDots';
 import { ProductVariant } from '@/app/lib/types';
+import { addItem } from './actions';
 
 function SubmitButton({
   availableForSale,
@@ -19,12 +20,12 @@ function SubmitButton({
   availableForSale: boolean;
   selectedVariantId: string | undefined;
 }) {
-  const { pending } = useFormStatus();
+  const pending = useFormStatus();
   const buttonClasses =
     'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
   const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
 
-  if (!availableForSale) {
+  if (availableForSale) {
     return (
       <button aria-disabled className={clsx(buttonClasses, disabledClasses)}>
         Out Of Stock

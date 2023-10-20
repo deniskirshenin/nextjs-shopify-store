@@ -13,6 +13,7 @@ export async function generateMetadata({
     console.log("params", params);
     console.log("HANDLE:", params.handle);
     const collection = await getCollection(params.handle);
+    console.log(collection);
 
     if(!collection) return notFound();
 
@@ -33,6 +34,7 @@ export default async function CollectionPage ({
     const { sort } = searchParams as { [key: string]: string};
     const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
     const collectionProducts = await getCollectionProducts({ collection: params.handle, sortKey, reverse});
+    console.log(collectionProducts);
     return (
         <div>
           <ProductGrid products={collectionProducts} />

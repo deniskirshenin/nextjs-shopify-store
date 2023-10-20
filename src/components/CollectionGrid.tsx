@@ -14,7 +14,7 @@ const CollectionGrid = async () => {
               {collectionList.map((collection, i) => (
                 <div key={`${collection.handle}${i}`} className="flex flex-[1_0_50%] w-full">
                   <div className="relative flex flex-1">
-                    <Link className='text-xl text-white-500 aspect-[1/1]' href={`/collection/${collection.handle}`}>
+                    <Link className='text-xl text-white-500 aspect-[1/1]' href={`/collections/${collection.handle}`}>
                       <Image
                         src={collection.image.url}
                         alt={collection.image.altText}

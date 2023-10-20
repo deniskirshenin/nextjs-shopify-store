@@ -1,12 +1,14 @@
+
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { getMenu } from '@/app/lib/shopify';
 import { Menu } from '@/app/lib/types';
 import Logo from '../Logo';
 import Search from './Search';
-import OpenCart from '../cart/OpenCart';
-import Cart from '../cart/Cart';
+
 import Banner from '../Banner';
+import Cart from '../cart';
+import OpenCart from '../cart/OpenCart';
 
 const Header = async () => {
   const menu = await getMenu('menu');

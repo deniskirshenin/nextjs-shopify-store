@@ -1,39 +1,50 @@
 import { getProduct } from "@/app/lib/shopify";
 import ProductPage from "@/components/product/ProductPage";
-import ProductVariants from "@/components/product/ProductVariants";
-import { StarIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
+import { ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
 export const runtime = 'edge';
+// const selectedOptions = [
+//   { name: 'size', value: '8' },
+//   { name: 'size', value: '9' },
+// ];
 
 export async function generateMetadata({
-  params
+  params,
+  searchParams
 }: {
-  params: {handle: string}
+  params: {handle: string};
+  searchParams: { [key: string]: string | string[] | undefined };
+  parent: ResolvingMetadata
 }) {
   console.log("params", params);
     const handle = params.handle;
     console.log("HANDLE:", handle);
-    const collection = await getProduct(handle);
+  
+    console.log("search params:", searchParams);
+    
+    const product = await getProduct(handle);
 
-    if(!collection) return notFound();
+    if(!product) return notFound();
 };
 
 const SingleProductPage = async ({
-  params
+  params,
+  searchParams
 }: {
-  params: {handle: string}
+  params: {handle: string};
+  searchParams: { [key: string]: string | string[] | undefined };
 }) => {
 
   const product = await getProduct(params.handle);
-  console.log(product);
 
+  console.log(product);
   if (!product) {
     return notFound(); // Handle the not-found case
   }
   return (
     <ProductPage product={product} />
+    
   );
 };
 

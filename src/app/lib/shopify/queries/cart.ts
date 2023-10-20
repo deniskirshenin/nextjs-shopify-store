@@ -1,11 +1,10 @@
-import { gql } from "@/utils/gql";
-import cartFragment from "../fragments/cart";
+import cartFragment from '../fragments/cart';
 
-export const getCartQuery = gql`
-    query getCart() {
-        cart(id: $cartId) {
-            ...cart
-        }
+export const getCartQuery = /* GraphQL */ `
+  query getCart($cartId: ID!) {
+    cart(id: $cartId) {
+      ...cart
     }
-    ${cartFragment}
+  }
+  ${cartFragment}
 `;
